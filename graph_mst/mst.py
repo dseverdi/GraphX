@@ -69,19 +69,21 @@ class MSTKruskal:
         """ inicijaliziraj MST algoritam """
         self._G = G
         self._mst_forrest = []
-        self._disjoint_set = DisjointSet()
+        self._disjoint_set = DisjointSet()  # implementacija koja nedostaje
+        self._weight = 0.0
 
     def kruskal(self):
         """ implementacija Kruskalovog algoritma """
         for e in self._G.edges().sort():
             u,v = e.origin(), e.destination()
-            if self._disjoint_set.find_set(u)==self._disjoint_set.find_set(v):
+            if self._disjoint_set.find_set(u) == self._disjoint_set.find_set(v):
                 self._mst_forrest.append(e)
+                self._weight += e.element()
                 self._disjoint_set.union(u,v)
 
     def total_weight():
         """ metoda vraca ukupnu tezinu MST-a"""
-        pass
+        return self._weight
 
     def MSTree():
         """ metoda vraca bridove koji tvore stablo """

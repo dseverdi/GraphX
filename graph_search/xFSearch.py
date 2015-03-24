@@ -1,7 +1,5 @@
 
 
-from graph.graph_ADT.graph import Graph
-
 
 class DFSearch:
     """ klasa koja implementira depth-first-search pretrazivanje grafa"""
@@ -61,7 +59,7 @@ class BFSearch:
         # init step
         for u in self._G.vertices():
             self._color[u] = 'white'
-            self._dist[u] = float('inf')# ili neki konacan broj, a dovoljno velik
+            self._dist[u]  = float('inf')  # ili neki konacan broj, a dovoljno velik
             self._pi[u]    = None
 
         self._color[self._s] = 'gray'
@@ -77,6 +75,10 @@ class BFSearch:
                     self._pi[v]    = u
                     self._queue.append(v)
             self._color[u] = 'black'
+
+    def pi(self,v):
+        """vrati prethodnika od v u BFS stablu s korijenom r"""
+        return self._pi[v]
 
     def path(self,v):
         """ metoda ispisuje vrhove na (s,v)-putu"""

@@ -60,3 +60,47 @@ class GraphColorability:
         print self._vertex_color[v]
 
 
+
+
+
+class AllPairsSP:
+    """ racunanje svih najkracih putova u (netezinskom) neusmjerenom grafu."""
+
+    def __init__(self,G):
+        """ inicijalizator klase """
+        self._G = G
+        self._sp_pairs = {v:{} for v in self._G.vertices()}
+        self._sp_paths = {v:{} for v in self._G.vertices()}
+
+        # inicijaliziriaj matricu s sp udaljenostima
+        for u in self._G.vertices():
+            for v in self._G.vertices():
+                self._sp_pairs[u][v] = float('inf')
+                self._sp_paths[u][v] = None
+
+
+        from xFSearch import BFSearch
+
+        for u in self._G.vertices():
+            bfs_G = BFSearch(self._G,u)
+            for v in self._G.vertices():
+                if bfs_G.distance(v)< self._sp_pairs[u][v]:
+                    self._sp_pairs[u][v] =  bfs_G.distance(v)
+                    # dodati rekonstrukciju puta
+                    self._sp_paths[u][v] = bfs_G.pi(v)
+
+
+
+    def sp(self,u,v):
+        """ metoda vraca duljinu najkraceg puta"""
+        return self._sp_pairs[u][v]
+
+
+    def print_sp(self,u,v):
+        """ metoda vraca vrhove na (u,v)-putu"""
+        if not self.sp(u,v)<float('inf'): print "(%s,%s)-put ne postoji" % (s,v)
+        if u == v: print u,
+        else:
+            self.print_sp(u,self._sp_paths[u][v])
+            print "-", v,
+
