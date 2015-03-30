@@ -1,3 +1,8 @@
+from graph_ADT.graph       import DirectedGraph
+from generators.graph_IO   import GraphIO
+from graph_search.xFSearch import DFSearch
+
+
 class ConnectedComponents:
     """ koristeci DFS algoritam odrediti povezane komponente"""
     def __init__(self,G):
@@ -103,4 +108,44 @@ class AllPairsSP:
         else:
             self.print_sp(u,self._sp_paths[u][v])
             print "-", v,
+
+
+class TopologicalSort:
+    """
+    algoritam definira topoloski uredjaj vrhova grafa,
+    pretpostavka: G je DAG
+    """
+    def __init__(self,G):
+        """inicijalizacija algoritma"""
+        # lista vrhova u toploskom sortiranju
+        self._ts = {}
+        if isinstance(G,DirectedGraph):
+            self._G = G
+            self.TS()
+        else:
+            # self._G = GraphIO.dag(G)
+            pass
+
+
+    def TS(self):
+        """algoritam topoloskog sortiranja"""
+        dfs = DFSearch(self._G)
+        ts_pairs = sorted([(u,dfs.ord(u)[1]) for u in self._G.vertices()],key = lambda element: element[1],reverse=True)
+        ts = [x[0] for x in ts_pairs]
+        self._ts = {x[0]:ts_pairs.index(x) for x in ts_pairs}
+        print "TS:" ,ts
+
+    def ts_id(self,u):
+        """vrati polozaj vrha u topolskom sortiranju"""
+        return self._ts[u]
+
+
+
+
+
+
+
+
+
+
 

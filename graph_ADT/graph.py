@@ -2,7 +2,7 @@
 #
 #
 
-class Graph:
+class graph:
   """Reprezentacija jednostavnog grafa"""
 
   #------------------------- nested Vertex class -------------------------
@@ -46,7 +46,7 @@ class Graph:
 
     def opposite(self, v):
       """Vrati vrh koji je nasuprotan vrh ovog Edge objekta."""
-      if not isinstance(v, Graph.Vertex):
+      if not isinstance(v, graph.Vertex):
         raise TypeError('v mora biti vertex objekt.')
       return self._destination if v is self._origin else self._origin
       raise ValueError('v nije incidentan tom bridu.')
@@ -62,7 +62,7 @@ class Graph:
       return '({0},{1},{2})'.format(self._origin,self._destination,self._element)
 
     def __cmp__(self,e):
-        if not isinstance(e,Graph.Edge): raise ValueError('Nije valjan brid za usporedbu')
+        if not isinstance(e,graph.Edge): raise ValueError('Nije valjan brid za usporedbu')
         elif self._element > e._element : return 1
         elif self._element == e._element : return 0
         else: return 0
@@ -77,7 +77,7 @@ class Graph:
     self._incoming = {} if directed else self._outgoing
 
   def _getVertex(self,v):
-    if isinstance(v,Graph.Vertex):
+    if isinstance(v,graph.Vertex):
         return v
     elif self._vertex_map.has_key(v) : return self._vertex_map[v]
     else: return None
@@ -177,3 +177,17 @@ class Graph:
             print "(%s) " % str(v.key()),
 
     print "\n"
+
+
+# sucelje prema grafu/digrafu
+class UndirectedGraph(graph):
+    """Implementacija usmjerenog grafa kao izvedena klasa"""
+    def __init__(self):
+        """derived constructor """
+        graph.__init__(self,directed=False)
+
+class DirectedGraph(graph):
+    """klasa usmjerenog grafa kao izvedena klasa"""
+    def __init__(self):
+        """izvedeni konstruktor za usmjereni graf"""
+        graph.__init__(self,directed=True)

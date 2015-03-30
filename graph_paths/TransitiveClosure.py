@@ -23,7 +23,7 @@ class TransitiveClosure:
             # kad zavrsis u,v parove kreni na sljedecu iteraciju
             self._tc = tc_new
 
-        print self._tc
+
 
     def reachable(self,u,v):
         """provjeri je li v dohvatljiv iz u """
