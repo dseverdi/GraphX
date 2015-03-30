@@ -57,9 +57,6 @@ class MSTPrim:
 
 
 
-
-
-
 # Implementacija kruskalovog algoritma
 
 
