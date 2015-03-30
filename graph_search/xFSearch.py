@@ -8,6 +8,7 @@ class DFSearch:
         self._discovered = dict() # d[v] za sve v iz V kao rjecnik
         self._finished   = dict() # f[v] za sve v iz V kao rjecnik
         self._color = dict()
+        self._edge_type = dict()
 
         self._G = G # referenca na graf parametar
 
@@ -24,20 +25,37 @@ class DFSearch:
             if self._color[u] == 'white':
                 self._DFS_visit(u)
 
+        # vrste bridova
+
+
+
     def _DFS_visit(self,u):
         """ implementacija rekurzivnog DFS-algoritma"""
         self._color[u]='grey'
         self._time += 1
         self._discovered[u] = self._time
         for v in self._G.neighbourhood(u):
-            if (self._color[v]=='white'): self._DFS_visit(v)
+            e = self._G.get_edge(u,v) # pridruzi brid tom paru
+            if self._color[v]=='white':
+                self._edge_type[e]='T'
+                self._DFS_visit(v)
+            elif self._color[v]=='gray': self._edge_type[e]='B'
+            elif self._discovered[u]<self._discovered[v]: self._edge_type[e]='F'
+            elif self._discovered[u]>self._discovered[v]: self._edge_type[e]='C'
         self._color[u] = 'black'
         self._time += 1
         self._finished[u] = self._time
 
+
+
+
     def ord(self,u):
         """Metoda vraca par (d[u],f[u]) za dani vrh u"""
         return (self._discovered[u],self._finished[u])
+
+    def edge_type(self,u,v):
+        e = self._G.get_edge(u,v)
+        if e is not None: return self._edge_type[e]
 
 
 from collections import deque

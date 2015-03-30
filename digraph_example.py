@@ -1,5 +1,6 @@
 from  graph_ADT.graph                 import DirectedGraph
 from  generators.graph_IO             import GraphIO
+from  graph_search.xFSearch           import DFSearch
 from  graph_paths.TransitiveClosure   import TransitiveClosure
 from graph_search.applications        import TopologicalSort
 
@@ -14,6 +15,10 @@ def test_digraph():
     IO.read_from_edges(edges)
     IO.show('digraf') # Skica grafa sprema se u direktorij .
     DG.show()
+
+    print "Bridovi tipa: ",
+    dfs = DFSearch(DG)
+    print dfs.edge_type(4,1)
 
     # ispitati tranzitivni zatvarac
     tc = TransitiveClosure(DG)
