@@ -145,7 +145,24 @@ class TopologicalSort:
 
 
 
+class SCC:
+    def __init__(self,G):
+        """ konstruktor klase"""
+        pass
 
+    def calculateSCC(self):
+        """implementacija prema opisanom algoritmu"""
+        pass
 
+    def count(self):
+        """ metoda vraca broj SCC-a"""
+
+    def scc_id(self,v):
+        """ metoda vraca identifikator SCC-a za vrh v"""
+        pass
+
+    def strongly_reachable(self,u,v):
+        """metoda koja provjerava snaznu dohvatljivost izmedju vrhova u i v"""
+        pass
 
 
