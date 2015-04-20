@@ -1,6 +1,4 @@
-# klijentski program koji nutvrdjuje postojanje puta izmedju 2 vrha
 
-from graph.graph_ADT.graph import Graph
 
 class SimplePath:
     """ Jednostavna klasa koja nad grafom G nalazi put izmedju vrhova u i v"""
@@ -48,6 +46,60 @@ class HamiltonPath:
 
     def exists(self):
         return self._found
+
+
+
+class SS_SP:
+    """ algoritmi za racunanje najkracih putova u tezinskom grafu"""
+    def __init__(self,G,s,method=None):
+        """konstruktor klase """
+        self._G = G
+        self._source = s
+        self._pi = {} # predacessor list
+        self._d = {}
+
+
+        # init step
+        for v in self._G.vertices():
+            self._d[v]  = float('inf')
+            self._pi[v] = None
+        self._d[self._source] = 0
+
+
+        if method   == 'BF':
+            if self.BellmanFord(): print 'Graf nema negativnih ciklusa!'
+        elif method == 'D': self.Dijkstra()
+
+
+    def distance(self,v):
+        """vraca duljinu puta od s do v"""
+        return self._d[v]
+
+    def print_path(self,v):
+        """metoda ispisuje vrhove na najkracem putu od s do v"""
+        pass
+
+    # implementacije SSSP algoritama
+    def BellmanFord(self):
+        """Bellman-Ford implementacija"""
+        for i in range(1,G.vertex_count()-1):
+            for e in self._G.edges():
+                self.relax(e,w)
+        for e in self._G.edges():
+            u,v = e.endpoints()
+            if self._d[v]>self._d[u]+e.element(): return False
+        return True
+
+    def Dijkstra(self):
+        """Dijsktrin algoritam"""
+        pass
+
+    def _relax(self,e,w):
+        """na temelju danog brida, metoda radi relaksaciju"""
+        u,v = e.endpoints() # ucitaj vrhove iz brida
+        if self._d[v]<self._d[u]+e.element():   # e.element = w(u,v)
+            self._d[v] = self._d[u]+e.element()
+            self._pi[v] = u
 
 
 
