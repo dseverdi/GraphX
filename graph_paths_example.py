@@ -5,7 +5,7 @@ from graph_paths.paths import SS_SP
 def test_sssp():
     """test funkcija koja ucitava graf iz ntorke parova"""
 
-     """ glavna test funkcija """
+    """ glavna test funkcija """
     DG = DirectedGraph()
 
     verts = ('s','t','x','y','z')
@@ -18,15 +18,15 @@ def test_sssp():
            )
 
     for u in verts:
-        G.insert_vertex(u)
+        DG.insert_vertex(u)
     for e in edges:
         u,v,w = e[0],e[1],e[2]
-        G.insert_edge(u,v,w)
+        DG.insert_edge(u,v,w)
 
 
 
     sp_DG = SS_SP(DG,'s','BF')
-    print 'duljina najkraceg puta od vrha 0 do 3:{0}'.format(str(sp_DG.distance(3)))
+    print "duljina najkraceg puta od vrha 's' do 'z':{0}".format(str(sp_DG.distance('z')))
 
 
 

@@ -1,4 +1,4 @@
-
+from graph_mst.heapdict import heapdict
 
 class SimplePath:
     """ Jednostavna klasa koja nad grafom G nalazi put izmedju vrhova u i v"""
@@ -82,22 +82,23 @@ class SS_SP:
     # implementacije SSSP algoritama
     def BellmanFord(self):
         """Bellman-Ford implementacija"""
-        for i in range(1,G.vertex_count()-1):
+        for i in range(1,self._G.vertex_count()-1):
             for e in self._G.edges():
-                self.relax(e,w)
+                self._relax(e)
         for e in self._G.edges():
-            u,v = e.endpoints()
+            u,v = e.endpoints()[0].key(), e.endpoints()[1].key()
             if self._d[v]>self._d[u]+e.element(): return False
         return True
 
     def Dijkstra(self):
         """Dijsktrin algoritam"""
-        pass
+        Q = heapdict()
 
-    def _relax(self,e,w):
+
+    def _relax(self,e):
         """na temelju danog brida, metoda radi relaksaciju"""
-        u,v = e.endpoints() # ucitaj vrhove iz brida
-        if self._d[v]<self._d[u]+e.element():   # e.element = w(u,v)
+        u,v = e.endpoints()[0].key(),e.endpoints()[1].key() # ucitaj vrhove iz brida
+        if self._d[v]  > self._d[u] + e.element():   # e.element = w(u,v)
             self._d[v] = self._d[u]+e.element()
             self._pi[v] = u
 

@@ -146,11 +146,19 @@ class TopologicalSort:
 
 
 class SCC:
-    def __init__(self,G):
+    def __init__(self,G,method):
         """ konstruktor klase"""
         pass
 
-    def calculateSCC(self):
+    def calculateSCC_tc(self):
+        """implementacija prema opisanom algoritmu"""
+        pass
+
+    def calculateSCC_ts(self):
+        """implementacija prema opisanom algoritmu"""
+        pass
+
+    def calculateSCC_tarjan(self):
         """implementacija prema opisanom algoritmu"""
         pass
 
