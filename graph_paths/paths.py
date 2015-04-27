@@ -104,3 +104,25 @@ class SS_SP:
 
 
 
+
+class AP_SP:
+    """klasa implementira algoritme za utvrdjivanje puta izmedju parova svih vrhova"""
+    def __init__(self,G,method=None):
+        """konstruktor inicijalizira algoritam za AP-SP na grafu G"""
+        pass
+
+    def FloydWarshall(self):
+        """implementacija Floyd-Warshallovog algoritma"""
+        pass
+
+    def Johnson(self):
+        """Johnson algoritam za rijetke grafove"""
+        pass
+
+    def distance(self,u,v):
+        """metoda vraca duljinu najkraceg puta od u do v."""
+        pass
+
+    def print_path(self,u,v):
+        """metoda ispisuje vrhove na najkracem putu od u do v"""
+        pass
