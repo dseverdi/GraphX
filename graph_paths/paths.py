@@ -1,4 +1,5 @@
 from graph_mst.heapdict import heapdict
+from graph_ADT.graph import DirectedGraph
 
 class SimplePath:
     """ Jednostavna klasa koja nad grafom G nalazi put izmedju vrhova u i v"""
@@ -91,8 +92,14 @@ class SS_SP:
         return True
 
     def Dijkstra(self):
-        """Dijsktrin algoritam"""
-        Q = heapdict()
+        """Dijkstrin algoritam"""
+        Q = heapdict() # rjecnik kao binarna hrpa
+        for v in self._G.vertices():
+            Q[v] = self._d[v]
+        while len(Q):
+            u, w = Q.popitem()
+            for v in self._G.neighbourhood(u):
+                self._relax(self._G.get_edge(u, v))
 
 
     def _relax(self,e):
@@ -106,23 +113,91 @@ class SS_SP:
 
 
 class AP_SP:
-    """klasa implementira algoritme za utvrdjivanje puta izmedju parova svih vrhova"""
-    def __init__(self,G,method=None):
-        """konstruktor inicijalizira algoritam za AP-SP na grafu G"""
-        pass
 
-    def FloydWarshall(self):
-        """implementacija Floyd-Warshallovog algoritma"""
-        pass
+    def __init__(self, G, method = None):
+        """po pretpostavljenom, uzmi da je FloydWarshall osnovni algoritam"""
+        self._G = G # referenca na graf
+        self._D = {} # matrica D u kojoj cemo spremati najkrace putove
+        self._P = {} # matrica koja ce pomoci rekonstruirati put
 
-    def Johnson(self):
-        """Johnson algoritam za rijetke grafove"""
-        pass
+        if method == "FW" or method == None:
+            print "pozivam Bellman-Ford algoritam."
+            self._FloydWarshall()
 
-    def distance(self,u,v):
-        """metoda vraca duljinu najkraceg puta od u do v."""
-        pass
+        elif method == "J":
+            print "pozivam Johnson algoritam."
+            self._Johnson()
 
-    def print_path(self,u,v):
-        """metoda ispisuje vrhove na najkracem putu od u do v"""
-        pass
+        else:
+            print "druga metoda nije implementirana ..."
+
+    def _FloydWarshall(self):
+        """algoritam dinamickog programiranja za nalazenje najkracih putova iz svih parova vrhova. """
+        for u in self._G.vertices():
+            self._D[u] = {u : 0} # trvijalna udaljenost do samog vrha
+            self._P[u] = {}      # P[u]=None
+
+            # inicijaliziraj D^1 vrijednosti
+
+
+            for v in self._G.vertices():
+                edge = self._G.get_edge(u,v)
+                self._D[u][v] = float('inf') if edge is None else edge.element()
+
+
+            if u == v or self._D[u][v] == float('inf'): self._P[u][v] = None
+            else: self._P[u][v] = u
+
+        # rekurzivno racunanje D_k
+        for u in self._G.vertices():
+            for v in self._G.vertices():
+                for w in self._G.vertices():
+                    if self._D[v][w] > self._D[v][u] + self._D[u][w]:
+                        self._D[v][w] = self._D[v][u] + self._D[u][w] # azuriraj D vrijednosti
+                        self._P[v][w] = self._P[u][w] # azuriraj matricu prethodnika
+
+    def _Johnson(self):
+        """Johnson algoritam za nalazenje najkracih putove u rijetkom grafu"""
+        G = DirectedGraph()
+
+        G.insert_vertex('_S')
+        for u in self._G.vertices():
+            self._D[u] = {}
+            G.insert_vertex(u)
+            G.insert_edge('_S', u, 0) # dodaj bridove (s,v)
+
+        for e in self._G.edges():
+            u,v = e.endpoints()[0].key(), e.endpoints()[1].key()
+            G.insert_edge(u, v, e.element())
+
+        BF_G = SS_SP(G, '_S', "BF")
+        if not BF_G :
+            print "Graf sadrzi cikluse sa nagativnim tezinama ..."
+            return False
+
+        h = {} # spremi vrijednosti BF udaljenosti
+        for u in G.vertices():
+            h[u] = BF_G.distance(u)
+        for e in self._G.edges():
+            u,v = e.endpoints()[0].key(), e.endpoints()[1].key()
+            e._element = e._element + h[u] - h[v]
+
+        for u in self._G.vertices():
+            Dijkstra_G = SS_SP(self._G, u, "D")
+            for v in self._G.vertices():
+                self._D[u][v] = D.distance(v) + h[v] - h[u]
+            self._P[u] = Dijkstra_G._pi # spremi listu za rekonstrukciju puta
+
+    def distance(self, u, v):
+        """vrati udaljenost izmedju vrhova u i v"""
+        return self._D[u][v]
+
+    def print_path(self, u, v):
+        """ispisi vrhove na najkracem (u,v)-putu."""
+        p, s = v, str(v)
+
+        while True:
+            if p == u : print s
+            p = self._P[u][p]
+            if p == None: break
+            s = str(p) + "-" + s
