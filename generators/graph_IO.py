@@ -10,6 +10,7 @@ class GraphIO:
         self._G = G
     
     def read_from_edges(self, edges):
+        """metoda omogucava upis grafa preko bridova"""
         verts = set()
         
         for e in edges:
@@ -19,14 +20,27 @@ class GraphIO:
             self._G.insert_vertex(v)
     
         for e in edges:
-            self._G.insert_edge(e[0], e[1])
+        # ukoliko brid ima satelitske podatke dodaj ga u brid
+            if e[2] is None: self._G.insert_edge(e[0], e[1])
+            else: self._G.insert_edge(e[0],e[1],e[2])
+
+
     
-    def show(self,filename):
+    def show(self,filename=None):
+        """metoda ilustrirra graf."""
+
+        if not filename:
+            for v in self._G.vertices():
+                print("%s: " % str(v)),
+                for u in self._G.neighbourhood(v):
+                    print("%s " % str(u)),
+                print " "
+            return
+
         fig = Figure()
         can = FigureCanvas(fig)
         obj = fig.add_subplot(111)
         pos = {}
-      
 
 
         
