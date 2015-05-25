@@ -1,6 +1,7 @@
 from graph_ADT.graph import DirectedGraph
 from network.NetworkFlow import MaxFlow
 from generators.graph_IO import GraphIO
+from graph_ADT.graph import graph
 
 def max_flow_test():
     """testiranje problema maksimalnog toka."""
@@ -16,9 +17,14 @@ def max_flow_test():
 
            )
 
-    net1_IO = GraphIO(net1)
-    net1_IO.read_from_edges(edges)
-    net1_IO.show()
+    G = graph(directed = True) 
+    GraphIO(G).read_from_edges(edges)
+
+    F = MaxFlow(G, 's', 't')
+    print F.total_flow()
+    print F.check_feasibility()
+    for e in edges:
+        print e, F.flow(e[0], e[1])
 
 
 if __name__ == "__main__":
